@@ -16,9 +16,6 @@ class AuthManager extends Controller
             "password" => "required|min:8"
         ]);
 
-
-        $email = $request->input("email");
-        $password = $request->input("password");
         $credentials = $request->only('email', 'password');
 
 
