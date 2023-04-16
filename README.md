@@ -3,3 +3,4 @@
 ## Voici la liste des fonctionnalites que nous avons implementes dans le backend:
 
 - Authentification basique: Creation de compte avec login.
+- Recevoir un utilisateur par son id / email.

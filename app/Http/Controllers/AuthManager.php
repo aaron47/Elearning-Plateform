@@ -43,4 +43,15 @@ class AuthManager extends Controller
 
         return response("Account created successfully", 201);
     }
+
+    public static function find_user_by_email()
+    {
+        $email = request()->input("email");
+        return User::findOrFail($email);
+    }
+
+    public static function find_user_by_id($id)
+    {
+        return User::findOrFail($id);
+    }
 }
