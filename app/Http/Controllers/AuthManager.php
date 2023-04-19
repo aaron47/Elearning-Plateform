@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthManager extends Controller
 {
-    public static function login_post(Request $request)
+    public function login_post(Request $request)
     {
         $request->validate([
             "email" => "required|email",
@@ -20,13 +20,20 @@ class AuthManager extends Controller
 
 
         if (Auth::attempt($credentials)) {
-            return response("Login successful", 200);
+            return response([
+                "error" => false,
+                "message" => "Logged in successfully",
+                "email" => $request->input("email"),
+            ], 200);
         }
 
-        return response("Wrong Credentials, please try again", 400);
+        return response([
+            "error" => true,
+            "message" => "Wrong Credentials, please try again",
+        ], 400);
     }
 
-    public static function register_post(Request $request)
+    public function register_post(Request $request)
     {
         $request->validate([
             "email" => "required|email|unique:users",
@@ -38,20 +45,30 @@ class AuthManager extends Controller
         $user = User::create($data);
 
         if (!$user) {
-            return response("Wrong Credentials, please try again", 400);
+            return response([
+                "error" => true,
+                "message" => "Wrong Credentials, please try again",
+            ], 400);
         }
 
-        return response("Account created successfully", 201);
+        return response([
+            "error" => false,
+            "message" => "Account created successfully",
+            "email" => $request->input("email"),
+        ], 201);
     }
 
-    public static function find_user_by_email()
+    public function find_user_by_id($id)
     {
-        $email = request()->input("email");
-        return User::findOrFail($email);
-    }
+        $user = User::findOrFail($id);
 
-    public static function find_user_by_id($id)
-    {
-        return User::findOrFail($id);
+        if (!$user) {
+            return response([
+                "error" => true,
+                "message" => "User not found",
+            ], 404);
+        }
+
+        return response(["user" => User::findOrFail($id)], 200);
     }
 }

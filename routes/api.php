@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthManager;
+use App\Http\Controllers\CertificateController;
+use App\Http\Controllers\FormationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +21,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// auth
 Route::post("/login", [AuthManager::class, "login_post"])->name("login.post");
 Route::post("/register", [AuthManager::class, "register_post"])->name("register.post");
 Route::get("/user/{id}", [AuthManager::class, "find_user_by_id"])->name("user.find_by_id");
-Route::get("/user", [AuthManager::class, "find_user_by_email"])->name("user.find_by_id");
+
+// formations
+Route::post("/formation/create", [FormationController::class, "create_formation"])->name("formation.create");
+Route::get("/formations", [FormationController::class, "get_all_formations"])->name("formations.get_all");
+Route::get("/formations/{user_id}", [FormationController::class, "get_user_formations"])->name("formations.get_user");
+
+// certificate
+Route::post("/certificate/create", [CertificateController::class, "create_certificate"])->name("certificate.create");
+Route::get("/certificates/{user_id}", [CertificateController::class, "get_user_certificates"])->name("certificates.get_user");
+
