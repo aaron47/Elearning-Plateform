@@ -13,7 +13,7 @@ class AuthManager extends Controller
     {
         $request->validate([
             "email" => "required|email",
-            "password" => "required|min:8"
+            "password" => "required|min:8",
         ]);
 
         $credentials = $request->only('email', 'password');
@@ -24,6 +24,8 @@ class AuthManager extends Controller
                 "error" => false,
                 "message" => "Logged in successfully",
                 "email" => $request->input("email"),
+                "type" => Auth::user()->type,
+                "id" => Auth::user()->id,
             ], 200);
         }
 
@@ -42,6 +44,7 @@ class AuthManager extends Controller
 
         $data['email'] = $request->input("email");
         $data['password'] = Hash::make($request->input("password"));
+        $data['type'] = $request->input("type");
         $user = User::create($data);
 
         if (!$user) {

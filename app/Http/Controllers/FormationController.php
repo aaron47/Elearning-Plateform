@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class FormationController extends Controller
 {
-
     public function get_all_formations()
     {
         $formations = Formation::all();

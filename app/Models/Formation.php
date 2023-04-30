@@ -15,12 +15,15 @@ class Formation extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
+        'user_id',
         'name',
         'description',
         'price',
         'duration',
         'image',
     ];
+
+    public $timestamps = false;
 
     public function user(): BelongsTo
     {
