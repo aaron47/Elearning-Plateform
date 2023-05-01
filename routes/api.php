@@ -30,8 +30,8 @@ Route::get("/user/{id}", [AuthManager::class, "find_user_by_id"])->name("user.fi
 Route::post("/formation/create", [FormationController::class, "create_formation"])->name("formation.create");
 Route::get("/formations", [FormationController::class, "get_all_formations"])->name("formations.get_all");
 Route::get("/formations/{user_id}", [FormationController::class, "get_user_formations"])->name("formations.get_user");
+Route::post("/formation/participate", [FormationController::class, "participate_in_formation"])->name("formations.participate");
 
 // certificate
 Route::post("/certificate/create", [CertificateController::class, "create_certificate"])->name("certificate.create");
 Route::get("/certificates/{user_id}", [CertificateController::class, "get_user_certificates"])->name("certificates.get_user");
-
