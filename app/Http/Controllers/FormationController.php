@@ -6,6 +6,7 @@ use App\Models\Formation;
 use App\Models\Participation;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FormationController extends Controller
 {
@@ -114,11 +115,56 @@ class FormationController extends Controller
         $data['user_id'] = $user_id;
         $data['formation_id'] = $formation_id;
 
-       Participation::create($data);
+        Participation::create($data);
 
         return response([
             "error" => false,
             "message" => "User participated in formation successfully",
         ], 201);
+    }
+
+
+    public function get_all_formation_participants(string $id)
+    {
+        $formation = Formation::find($id);
+
+        if (!$formation) {
+            return response([
+                "error" => true,
+                "message" => "Formation not found",
+            ], 404);
+        }
+
+        $participants = DB::table("formation_participants")->selectRaw("*")->where("formation_id", $id)->get();
+        
+        $users = [];
+
+        foreach ($participants as $participant) {
+            $user = User::find($participant->user_id);
+            array_push($users, $user);
+        }
+
+        return response([
+            "error" => false,
+            "participants" => $users,
+        ], 200);
+    }
+
+    public function delete_participant($id) {
+        $participant = Participation::find($id);
+
+        if (!$participant) {
+            return response([
+                "error" => true,
+                "message" => "Participant not found",
+            ], 404);
+        }
+
+        $participant->delete();
+
+        return response([
+            "error" => false,
+            "message" => "Participant deleted successfully",
+        ], 200);
     }
 }

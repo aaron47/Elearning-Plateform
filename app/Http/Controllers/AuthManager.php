@@ -74,4 +74,25 @@ class AuthManager extends Controller
 
         return response(["user" => User::findOrFail($id)], 200);
     }
+
+
+    public function delete_user($id) 
+    {
+
+        $user = User::findOrFail($id);
+
+        if (!$user) {
+            return response([
+                "error" => true,
+                "message" => "User not found",
+            ], 404);
+        }
+
+        $user->delete();
+
+        return response([
+            "error" => false,
+            "message" => "User deleted successfully",
+        ], 200);
+    }
 }
